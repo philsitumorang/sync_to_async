@@ -3,15 +3,14 @@ Async wrapper to sync functions in Python.
 ```python
 import asyncio
 import functools
-from concurrent.futures import ThreadPoolExecutor
 
 
 def sync_to_async(fn):
     @functools.wraps(fn)
-    def wrapper(*args, **kwargs):
-        pool = ThreadPoolExecutor(max_workers=1)
+    async def wrapper(*args, **kwargs):
         loop = asyncio.get_event_loop()
-        return loop.run_in_executor(pool, fn, *args, **kwargs)
+        p_func = functools.partial(fn, *args, **kwargs)
+        return await loop.run_in_executor(None, p_func)
 
     return wrapper
 ```
@@ -22,7 +21,6 @@ import time
 import functools
 from sanic.response import json
 from sanic import Sanic
-from concurrent.futures import ThreadPoolExecutor
 from sanic.config import Config
 
 Config.KEEP_ALIVE_TIMEOUT = 60
@@ -30,10 +28,10 @@ Config.KEEP_ALIVE_TIMEOUT = 60
 
 def sync_to_async(fn):
     @functools.wraps(fn)
-    def wrapper(*args, **kwargs):
-        pool = ThreadPoolExecutor(max_workers=1)
+    async def wrapper(*args, **kwargs):
         loop = asyncio.get_event_loop()
-        return loop.run_in_executor(pool, fn, *args, **kwargs)
+        p_func = functools.partial(fn, *args, **kwargs)
+        return await loop.run_in_executor(None, p_func)
 
     return wrapper
 
