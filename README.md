@@ -20,10 +20,10 @@ def sync_to_async(fn):
 ```python
 import asyncio
 import time
+import functools
 from sanic.response import json
 from sanic import Sanic
 from concurrent.futures import ThreadPoolExecutor
-import functools
 from sanic.config import Config
 
 Config.KEEP_ALIVE_TIMEOUT = 60
