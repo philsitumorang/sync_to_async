@@ -1,8 +1,7 @@
 # sync_to_async
 Async wrapper to sync functions in Python.
 ```python
-import time
-import asyncio    
+import asyncio
 import functools
 from concurrent.futures import ThreadPoolExecutor
 
